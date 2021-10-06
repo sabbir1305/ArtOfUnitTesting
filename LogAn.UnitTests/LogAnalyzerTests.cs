@@ -14,13 +14,26 @@ namespace LogAn.UnitTests
 
         [TestCase("Filename.slf",true)]
         [TestCase("Filename.SLF",true)]
-        [TestCase("Filename.SLF",false)]
+        [TestCase("Filename.sds",false)]
         public void IsalidLogFileName_ValidExtensions_ReturnsTrue(string file, bool expected)
         {
-            LogAnalyzer analyzer = new LogAnalyzer();
-            bool result = analyzer.IsValidLogFileName(file);
+            FakeExtensionManager fakeExtensionManager = new FakeExtensionManager();
+            fakeExtensionManager.WillBeValid = true;
+            LogAnalyzer analyzer = new LogAnalyzer(fakeExtensionManager);
+            bool result = analyzer.IsValidLogFileName(file); 
 
             Assert.AreEqual(result,expected);
+        }
+
+       
+    }
+
+    internal class FakeExtensionManager : IExtensionManager
+    {
+        public bool WillBeValid = false;
+        public bool IsValid(string fileName)
+        {
+            return WillBeValid;
         }
     }
 }

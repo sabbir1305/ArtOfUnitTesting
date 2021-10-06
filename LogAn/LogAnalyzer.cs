@@ -8,13 +8,19 @@ namespace LogAn
 {
    public class LogAnalyzer
     {
+        private IExtensionManager manager;
+        public LogAnalyzer(IExtensionManager mgr)
+        {
+            manager = mgr;
+        }
         public bool IsValidLogFileName(string fileName)
         {
-            if (!fileName.EndsWith(".SLF",StringComparison.CurrentCultureIgnoreCase))
-            {
-                return false;
-            }
-            return true;
+            return manager.IsValid(fileName);
         }
+    }
+
+    public interface IExtensionManager
+    {
+        bool IsValid(string fileName);
     }
 }
